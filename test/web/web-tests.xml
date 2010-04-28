@@ -1,0 +1,559 @@
+<!-- ======================================================================= -->
+<!-- $Id: web-tests.xml 1694 2006-07-09 05:22:30Z mraible $               -->
+<!-- ======================================================================= -->
+<!DOCTYPE project [
+    <!ENTITY config SYSTEM "file:./config.xml">
+    <!ENTITY login SYSTEM "file:./login.xml">
+]>
+<project basedir="." default="run-all-tests"> 
+    <!-- Use i18n bundle, 2nd one listed is the default -->
+    <property file="${build.dir}/test/properties/ApplicationResources_${user.language}.properties"/>
+    <property file="web/WEB-INF/classes/ApplicationResources.properties"/>
+
+    <!-- runs all targets -->
+    <target name="run-all-tests" 
+        depends="Login,Logout,PasswordHint,Signup,UserTests,FlushCache,FileUpload,MiembroCargoRelacionTests,CargoTests,CargoTests,MiembroTests,CargoTests,CargoTests,MiembroTests"
+        description="Call and executes all test cases (targets)"/>
+    
+    <!-- runs user-related tests -->
+    <target name="UserTests" 
+        depends="EditUser,SearchUser,SaveUser,AddUser,ActiveUsers"
+        description="Call and executes all user test cases (targets)">
+        <echo>Successfully ran all User JSP tests!</echo>
+    </target>
+    
+    <!-- Login to the application -->
+    <target name="Login" 
+        description="Runs login test and verifies Main Menu's Title">
+        <webtest name="login">
+            &config;
+            <steps>
+                &login;
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Logout of the application -->
+    <target name="Logout"
+        description="Runs logout test and verifies Login's Title">
+        <webtest name="login">
+            &config;
+            <steps>
+                &login;
+                <invoke description="get Logout Page" url="/logout.jsp"/>
+                <verifytitle description="we should see the login title"
+                    text=".*${login.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Retrieve Password Hint -->
+    <target name="PasswordHint" 
+        description="Gets the user's password hint">
+        <webtest name="passwordHint">
+            &config;
+            <steps>
+                <invoke description="get Login Page" url="/"/>
+                <verifytitle description="we should see the login title" 
+                    text=".*${login.title}.*" regex="true"/>
+                <invoke description="click password hint link"
+                    url="/passwordHint.html?username=mraible"/>
+                <verifytitle description="we should see the login title again"
+                    text=".*${login.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+    
+    <!-- Verify the edit user screen displays without errors -->
+    <target name="EditUser" 
+        description="Tests selecting the 'Edit Profile' forward">
+        <webtest name="editUser">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Profile link" url="/editProfile.html"/>
+                <verifytitle description="we should see the user profile title" 
+                    text=".*${userProfile.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+    
+    <!-- Verify the user list screen displays without errors -->
+    <target name="SearchUser" 
+        description="Tests search for and displaying all users">
+        <webtest name="searchUser">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View Users link" url="/users.html"/>
+                <verifytitle description="we should see the user list title" 
+                    text=".*${userList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+    
+    <!-- Edit a user and then save -->
+    <target name="SaveUser" 
+        description="Tests editing and saving a user">
+        <webtest name="saveUser">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Profile link" url="/editProfile.html"/>
+                <verifytitle description="we should see the user profile title" 
+                    text=".*${userProfile.title}.*" regex="true"/>
+                <setinputfield description="set address" name="addressForm.address" value="2255 Lane Avenue"/>
+                <setinputfield description="set zipcode" name="addressForm.postalCode" value="59826"/>
+                <clickbutton label="${button.save}" description="Click Save"/>
+                <verifytitle description="display Main Menu if save OK"
+                     text=".*${mainMenu.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+    
+    <!-- Add a new user after logging in -->
+    <target name="AddUser"
+        description="Adds a new user profile">
+        <webtest name="addUser">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" 
+                    url="/editUser.html?method=Add&amp;from=list"/>
+                <verifytitle description="we should see the user profile title" 
+                    text=".*${userProfile.title}.*" regex="true"/>
+                    
+                <setinputfield description="set username" name="username" value="newuser"/>
+                <setinputfield description="set password" name="password" value="test"/>
+                <setinputfield description="set confirmPassword" name="confirmPassword" value="test"/>
+                <setinputfield description="set firstName" name="firstName" value="Test"/>
+                <setinputfield description="set lastName" name="lastName" value="Name"/>
+                <setinputfield description="set city" name="addressForm.city" value="Denver"/>
+                <setinputfield description="select province" name="addressForm.province" value="CO"/>
+                <setselectfield description="select country" name="addressForm.country" value="US"/>
+                <setinputfield description="set postalCode" name="addressForm.postalCode" value="80210"/>
+                <setinputfield description="set email" name="email" value="newuser@raibledesigns.com"/>
+                <setinputfield description="set website" name="website" value="http://raibledesigns.com"/>
+                <setinputfield description="set passwordHint" name="passwordHint" value="test"/>
+                <setcheckbox description="select roles" name="userRoles" checked="user"/>
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+                
+                <verifytitle description="Redisplay add user page" text=".*${userProfile.title}.*" regex="true"/>
+                <verifytext description="verify success message" regex="true"
+                    text='&lt;div class="message.*&gt;.*&lt;strong&gt;Test Name&lt;/strong&gt;.*&lt;/div&gt;'/>
+                    
+                <!-- Delete user -->
+                <invoke description="Click edit user link" url="/editUser.html?username=newuser&amp;from=list"/>
+                <prepareDialogResponse description="Confirm delete" dialogType="confirm" response="true"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifyNoDialogResponses/>
+                <verifytext description="verify success message" regex="true"
+                    text='&lt;div class="message.*&gt;.*&lt;strong&gt;Test Name&lt;/strong&gt;.*&lt;/div&gt;'/>
+                <verifytitle description="display user list" text=".*${userList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+    
+    <!-- Sign up a new user (no login) -->
+    <target name="Signup" description="Signup a new user">
+        <webtest name="signup">
+            &config;
+            <steps>
+                <!-- Logout in case user is already signed in -->
+                <invoke description="get Logout Page" url="/logout.jsp"/>
+
+                <invoke description="click signup link" url="/signup.html"/>
+                <verifytitle description="view signup title" text=".*${signup.title}.*" regex="true"/>
+                
+                <setinputfield description="set username" name="username" value="signup-user"/>
+                <setinputfield description="set password" name="password" value="test"/>
+                <setinputfield description="set confirmPassword" name="confirmPassword" value="test"/>
+                <setinputfield description="set firstName" name="firstName" value="Test"/>
+                <setinputfield description="set lastName" name="lastName" value="Name"/>
+                <setinputfield description="set city" name="addressForm.city" value="Denver"/>
+                <setinputfield description="set state" name="addressForm.province" value="CO"/>
+                <setselectfield description="select country" name="addressForm.country" value="US"/>
+                <setinputfield description="set postalCode" name="addressForm.postalCode" value="80210"/>
+                <setinputfield description="set email" name="email" value="signup-user@raibledesigns.com"/>
+                <setinputfield description="set website" name="website" value="http://raibledesigns.com"/>
+                <setinputfield description="set passwordHint" name="passwordHint" value="test"/>
+                <clickbutton label="${button.register}" description="Click button 'Signup'"/>
+
+                <verifytitle description="view main menu" text=".*${mainMenu.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${user.registered}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- View Active Users -->
+    <target name="ActiveUsers" 
+        description="View Active Users List">
+        <webtest name="activeUsers">
+            &config;
+            <steps>
+                &login;
+                <invoke description="get activeUsers URL" url="/activeUsers.html"/>
+                <verifytitle description="we should see the activeUsers title" 
+                    text=".*${activeUsers.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+    
+    <!-- Flush OSCache -->
+    <target name="FlushCache" 
+        description="opens JSP to Flush Page Cache">
+        <webtest name="flushCache">
+            &config;
+            <steps>
+                &login;
+                <invoke description="get flushCache URL" url="/flush.html"/>
+                <verifytitle description="we should see the flush cache title" 
+                    text=".*${flushCache.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+    
+    <!-- File Upload -->
+    <target name="FileUpload" description="Tests uploading a file">
+        <webtest name="fileUpload">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Upload a File link" url="/selectFile.html"/>
+                <verifytitle description="we should see file upload form" text=".*${upload.title}.*" regex="true"/>
+                <setinputfield description="set name" name="name" value="Canoo Test File"/>
+                <setFileField description="set file" name="file" fileName="${basedir}/build.properties"/>
+                <clickbutton label="${button.upload}" description="Click Upload"/>
+                <verifytitle description="show file data if upload OK" text=".*${display.title}.*" regex="true"/>
+                <verifytext description="verify original filename displayed on page" text="build.properties" />
+            </steps>
+        </webtest>
+    </target>
+
+
+
+
+
+
+
+<!--Miembro-START-->
+    <!-- runs miembro-related tests -->
+    <target name="MiembroTests"
+        depends="SearchMiembros,EditMiembro,SaveMiembro,AddMiembro,DeleteMiembro"
+        description="Call and executes all miembro test cases (targets)">
+        <echo>Successfully ran all Miembro JSP tests!</echo>
+    </target>
+
+    <!-- Verify the edit miembro screen displays without errors -->
+    <target name="EditMiembro"
+        description="Tests editing an existing Miembro's information">
+        <webtest name="editMiembro">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Miembro link" url="/editMiembro.html?id=1"/>
+                <verifytitle description="we should see the miembroDetail title"
+                    text=".*${miembroDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Edit a miembro and then save -->
+    <target name="SaveMiembro"
+        description="Tests editing and saving a miembro">
+        <webtest name="saveMiembro">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Miembro link" url="/editMiembro.html?id=1"/>
+                <verifytitle description="we should see the miembroDetail title"
+                    text=".*${miembroDetail.title}.*" regex="true"/>
+
+                <!-- update some of the required fields -->
+                <setinputfield description="set nombre" name="nombre" value="nombre"/>
+                <setinputfield description="set apellidoMaterno" name="apellidoMaterno" value="apellidoMaterno"/>
+                <setinputfield description="set apellidoPaterno" name="apellidoPaterno" value="apellidoPaterno"/>
+                <setinputfield description="set sexo" name="sexo" value="sexo"/>
+                <setinputfield description="set estadoCivil" name="estadoCivil" value="estadoCivil"/>
+                <setinputfield description="set modoIngreso" name="modoIngreso" value="modoIngreso"/>
+                <setinputfield description="set status" name="status" value="status"/>
+                <setinputfield description="set estudioVeintiochoCreencias" name="estudioVeintiochoCreencias" value="estudioVeintiochoCreencias"/>
+                <clickbutton label="${button.save}" description="Click Save"/>
+
+                <verifytitle description="Page re-appears if save successful"
+                    text=".*${miembroDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Add a new Miembro -->
+    <target name="AddMiembro"
+        description="Adds a new Miembro">
+        <webtest name="addMiembro">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" url="/editMiembro.html"/>
+                <verifytitle description="we should see the miembroDetail title"
+                    text=".*${miembroDetail.title}.*" regex="true"/>
+
+                <!-- enter required fields -->
+                <setinputfield description="set nombre" name="nombre" value="YnEgKlDqEwDwNtGoRlCuPsUbPvJwJp"/>
+                <setinputfield description="set apellidoMaterno" name="apellidoMaterno" value="GaBpPpPxDdHlXiEeImLwQdZvYzSlPu"/>
+                <setinputfield description="set apellidoPaterno" name="apellidoPaterno" value="ElIjTsTiWbAkWyVjXwWmOwLbTzRjVd"/>
+                <setinputfield description="set sexo" name="sexo" value="V"/>
+                <setinputfield description="set estadoCivil" name="estadoCivil" value="Pd"/>
+                <setinputfield description="set modoIngreso" name="modoIngreso" value="Pk"/>
+                <setinputfield description="set status" name="status" value="Jx"/>
+                <setinputfield description="set estudioVeintiochoCreencias" name="estudioVeintiochoCreencias" value="V"/>
+                <setinputfield description="set fechaBautismo" name="fechaBautismo" value="27/04/2010"/>
+                <setinputfield description="set fechaJuntaAdministrativa" name="fechaJuntaAdministrativa" value="27/04/2010"/>
+                <setinputfield description="set fechaJuntaDirectiva" name="fechaJuntaDirectiva" value="27/04/2010"/>
+                <setinputfield description="set numeroVotosJuntaAdministrativa" name="numeroVotosJuntaAdministrativa" value="1009273149"/>
+                <setinputfield description="set numeroVotosJuntaDirectiva" name="numeroVotosJuntaDirectiva" value="525409223"/>
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+
+                <verifytitle description="Miembro List appears if save successful"
+                    text=".*${miembroList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${miembro.added}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Delete existing miembro -->
+    <target name="DeleteMiembro"
+        description="Deletes existing Miembro">
+        <webtest name="deleteMiembro">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Miembro link" url="/editMiembro.html?id=1"/>
+                <prepareDialogResponse description="Confirm delete" dialogType="confirm" response="true"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifyNoDialogResponses/>
+                <verifytitle description="display Miembro List" text=".*${miembroList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${miembro.deleted}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Verify the people list screen displays without errors -->
+    <target name="SearchMiembros"
+        description="Tests search for and displaying all miembros">
+        <webtest name="searchMiembros">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View Miembros link" url="/miembros.html"/>
+                <verifytitle description="we should see the miembroList title"
+                    text=".*${miembroList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+<!--Miembro-END-->
+
+
+
+<!--Cargo-START-->
+    <!-- runs cargo-related tests -->
+    <target name="CargoTests"
+        depends="SearchCargos,EditCargo,SaveCargo,AddCargo,DeleteCargo"
+        description="Call and executes all cargo test cases (targets)">
+        <echo>Successfully ran all Cargo JSP tests!</echo>
+    </target>
+
+    <!-- Verify the edit cargo screen displays without errors -->
+    <target name="EditCargo"
+        description="Tests editing an existing Cargo's information">
+        <webtest name="editCargo">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Cargo link" url="/editCargo.html?id=1"/>
+                <verifytitle description="we should see the cargoDetail title"
+                    text=".*${cargoDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Edit a cargo and then save -->
+    <target name="SaveCargo"
+        description="Tests editing and saving a cargo">
+        <webtest name="saveCargo">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Cargo link" url="/editCargo.html?id=1"/>
+                <verifytitle description="we should see the cargoDetail title"
+                    text=".*${cargoDetail.title}.*" regex="true"/>
+
+                <!-- update some of the required fields -->
+                <setinputfield description="set nombre" name="nombre" value="nombre"/>
+                <setinputfield description="set descripcion" name="descripcion" value="descripcion"/>
+                <clickbutton label="${button.save}" description="Click Save"/>
+
+                <verifytitle description="Page re-appears if save successful"
+                    text=".*${cargoDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Add a new Cargo -->
+    <target name="AddCargo"
+        description="Adds a new Cargo">
+        <webtest name="addCargo">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" url="/editCargo.html"/>
+                <verifytitle description="we should see the cargoDetail title"
+                    text=".*${cargoDetail.title}.*" regex="true"/>
+
+                <!-- enter required fields -->
+                <setinputfield description="set nombre" name="nombre" value="AdJfRqPgDqJdTwSoRhVwThPdOhRlRmYyMzTjMpUyHfHvXiZwKpEyEfHgRdVoNsQaJzKtIvQkPeTwKzXeNaMuQkNcOzBgLlUvUtIf"/>
+                <setinputfield description="set descripcion" name="descripcion" value="KmXxNqSsLaLrGzHzZxZyNjLeBlHvApXcNuIqCkRhSsZuTlHcZnYlSkNeJeZkNzUaDgJqVuYmOfZlReYaAoQcZbBpUcGdXoBxOdRmMySyRtGeBjYuDzHuDkAtIpTbNnKhTuJsOiBjBfAtEjMhAlBmWk"/>
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+
+                <verifytitle description="Cargo List appears if save successful"
+                    text=".*${cargoList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${cargo.added}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Delete existing cargo -->
+    <target name="DeleteCargo"
+        description="Deletes existing Cargo">
+        <webtest name="deleteCargo">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Cargo link" url="/editCargo.html?id=1"/>
+                <prepareDialogResponse description="Confirm delete" dialogType="confirm" response="true"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifyNoDialogResponses/>
+                <verifytitle description="display Cargo List" text=".*${cargoList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${cargo.deleted}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Verify the people list screen displays without errors -->
+    <target name="SearchCargos"
+        description="Tests search for and displaying all cargos">
+        <webtest name="searchCargos">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View Cargos link" url="/cargos.html"/>
+                <verifytitle description="we should see the cargoList title"
+                    text=".*${cargoList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+<!--Cargo-END-->
+
+<!--MiembroCargoRelacion-START-->
+    <!-- runs miembroCargoRelacion-related tests -->
+    <target name="MiembroCargoRelacionTests"
+        depends="SearchMiembroCargoRelacions,EditMiembroCargoRelacion,SaveMiembroCargoRelacion,AddMiembroCargoRelacion,DeleteMiembroCargoRelacion"
+        description="Call and executes all miembroCargoRelacion test cases (targets)">
+        <echo>Successfully ran all MiembroCargoRelacion JSP tests!</echo>
+    </target>
+
+    <!-- Verify the edit miembroCargoRelacion screen displays without errors -->
+    <target name="EditMiembroCargoRelacion"
+        description="Tests editing an existing MiembroCargoRelacion's information">
+        <webtest name="editMiembroCargoRelacion">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MiembroCargoRelacion link" url="/editMiembroCargoRelacion.html?id=1"/>
+                <verifytitle description="we should see the miembroCargoRelacionDetail title"
+                    text=".*${miembroCargoRelacionDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Edit a miembroCargoRelacion and then save -->
+    <target name="SaveMiembroCargoRelacion"
+        description="Tests editing and saving a miembroCargoRelacion">
+        <webtest name="saveMiembroCargoRelacion">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MiembroCargoRelacion link" url="/editMiembroCargoRelacion.html?id=1"/>
+                <verifytitle description="we should see the miembroCargoRelacionDetail title"
+                    text=".*${miembroCargoRelacionDetail.title}.*" regex="true"/>
+
+                <!-- update some of the required fields -->
+                <clickbutton label="${button.save}" description="Click Save"/>
+
+                <verifytitle description="Page re-appears if save successful"
+                    text=".*${miembroCargoRelacionDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Add a new MiembroCargoRelacion -->
+    <target name="AddMiembroCargoRelacion"
+        description="Adds a new MiembroCargoRelacion">
+        <webtest name="addMiembroCargoRelacion">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" url="/editMiembroCargoRelacion.html"/>
+                <verifytitle description="we should see the miembroCargoRelacionDetail title"
+                    text=".*${miembroCargoRelacionDetail.title}.*" regex="true"/>
+
+                <!-- enter required fields -->
+                <setinputfield description="set fechaInicial" name="fechaInicial" value="28/04/2010"/>
+                <setinputfield description="set fechaFinal" name="fechaFinal" value="28/04/2010"/>
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+
+                <verifytitle description="MiembroCargoRelacion List appears if save successful"
+                    text=".*${miembroCargoRelacionList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${miembroCargoRelacion.added}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Delete existing miembroCargoRelacion -->
+    <target name="DeleteMiembroCargoRelacion"
+        description="Deletes existing MiembroCargoRelacion">
+        <webtest name="deleteMiembroCargoRelacion">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MiembroCargoRelacion link" url="/editMiembroCargoRelacion.html?id=1"/>
+                <prepareDialogResponse description="Confirm delete" dialogType="confirm" response="true"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifyNoDialogResponses/>
+                <verifytitle description="display MiembroCargoRelacion List" text=".*${miembroCargoRelacionList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${miembroCargoRelacion.deleted}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Verify the people list screen displays without errors -->
+    <target name="SearchMiembroCargoRelacions"
+        description="Tests search for and displaying all miembroCargoRelacions">
+        <webtest name="searchMiembroCargoRelacions">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View MiembroCargoRelacions link" url="/miembroCargoRelacions.html"/>
+                <verifytitle description="we should see the miembroCargoRelacionList title"
+                    text=".*${miembroCargoRelacionList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+<!--MiembroCargoRelacion-END-->
+</project>
+
+
+
+
+
+
+

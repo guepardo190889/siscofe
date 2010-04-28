@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+
+>
+
+    <class
+            name="mx.edu.um.miembros.model.MiembroCargoRelacion"
+            table="miembro_cargo_relacion"
+    >
+
+    <id
+        name="id"
+            column="id"
+    >
+
+    <!-- The generator-class attribute of @hibernate.id is deprecated, use the @hibernate.generator tag instead -->
+    <generator class="increment">
+
+    </generator>
+
+    </id>
+
+        <version
+            name="version"
+            column="version"
+            type="java.lang.Integer"
+        />
+
+        <many-to-one
+            name="miembro"
+                    column="miembro_id"
+                not-null="true"
+        >
+
+        </many-to-one>
+
+        <many-to-one
+            name="cargo"
+                    column="cargo_id"
+                not-null="true"
+        >
+
+        </many-to-one>
+
+        <property
+            name="fechaInicial"
+                    column="fechaInicial"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="fechaFinal"
+                    column="fechaFinal"
+                not-null="true"
+        >
+
+        </property>
+
+    </class>    
+
+</hibernate-mapping>
+

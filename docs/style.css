@@ -1,0 +1,282 @@
+/* Put all generic definitions here. */
+H1,H2,H3,H4 { font-family: Arial, Helvetica, sans-serif }
+DIV.small   { font-size: 80%; }
+H1.pagename { margin-top: 0; }
+IMG.inline  { margin-left: 2px; }
+
+A.footnoteref { vertical-align: super; 
+                font-size: 80%; }
+A.footnote    { color: #0044AA; }
+P.versionnote { color: red;
+                font-size: 130%;
+                text-align: center; 
+                background: #EAEAEA;
+                padding: 12px 12px 12px 12px;
+                }
+
+/* Added in v1.5.1 */
+
+H3.leftmenuheading { margin-top: 0; }
+BODY.edit   { background-color: #fbffd9; } /* Edit.jsp BODY element */
+TD.leftmenu { }                            /* Left menu */
+TD.page     { }                            /* Page data area */
+A.wikipage  { }                            /* Normal, internal wiki reference */
+A.external  { }                            /* External reference */
+A.interwiki { }                            /* Interwiki reference */
+
+table.diff {
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 5px;
+}
+/* Added in 1.6.3 */
+td.diffadd  { 
+    background: #99FF99; 
+    color: #000;
+    padding: 2px;
+    font-family: "Courier New", Courier, monospace !important;
+}
+TD.diffrem  { 
+    background: #FF9933; 
+    color: inherit;
+    font-family: "Courier New", Courier, monospace;
+}
+TD.diff { 
+    background: #FFFFFF; 
+    color: inherit;
+    font-family: "Courier New", Courier, monospace;
+}
+
+/* Added in 1.6.9 */
+
+TABLE.wikitable { }
+TABLE.wikitable * TD { text-align: left; }
+TABLE.wikitable * TH { }
+
+/* Added in 1.6.13 */
+
+/* This is the Edit.jsp editor style */
+TEXTAREA.editor {}
+
+/* Added in 1.9.20 */
+
+/* The text how the "This is a preview" comment should be shown. */
+.previewnote { text-align: center; 
+                font-size: 150%; 
+                    color: red; }
+
+/* How the preview content should be shown */
+.previewcontent { background: #E0E0E0; }
+
+/* How the system messages should be shown (DisplayMessage.jsp) */
+.messagecontent { background: #E0E0E0; }
+
+/* How the "This page has been modified..." -comment should be shown. */
+
+.conflictnote { }
+
+/* For the weblog plugin */
+
+.weblog { margin-left: 20px; }
+
+.weblogheading { background: #E0E0E0;
+                 font-size: 120%;
+                 font-family: sans-serif; 
+                 margin-top: 2ex; }
+
+.weblogentry { font-family: sans-serif; 
+               font-size: 85%; 
+               margin-left: 10px; }
+
+.weblogpermalink { font-size: 8px; 
+                   margin-left: 10px;
+                   clear: both; }
+
+P.locknote { color: red;
+             font-size: 130%;
+             text-align: center; 
+             background: #EAEAEA;
+             padding: 12px 12px 12px 12px;
+             }
+
+/* For the CalendarTag */
+TABLE.calendar  { font-size: 80%; }
+TABLE.calendar TD { text-align: center; }
+
+TABLE.calendar TD.othermonth { color: #707070; }
+
+TABLE.calendar TD.link { background: #E0E0E0; }
+
+TABLE.calendar TR.month { font-size: 120%;
+                          font-family: sans-serif; }
+TABLE.calendar TR.weekdays { color: #FF0000; }
+
+/* For the BreadcrumbsTag */
+.breadcrumbs { font-size: 60%; }
+
+/* For the image plugin tag. */
+.imageplugin { margin: 5px 5px 5px 5px; }
+.imageplugin img { border: 0; }
+.imageplugin caption { font-size: 80%; }
+
+/* For the search_highlight.js.  This style defines the how the words that have
+   been found look like.  If you look for "thingy", you will get these following
+   in the results.
+
+   <span class="searchword">thingy</span>
+ */
+.searchword { background-color: #FFFF00; }
+
+/* RAIBLE_MODs */
+
+a {
+    color: #f93;
+    font-weight: bold;
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+a:link {
+    color: red;
+}
+
+a:visited {
+    color: #cc0000;
+}
+
+a:hover {
+    color: green;
+    background: #eee;
+    text-decoration: underline overline;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    color: #333;
+    background: white;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px !important;
+}
+
+table, td {
+    font-size: 12px !important;
+    font-family: verdana, arial, helvetica, sans-serif !important;
+}
+
+code, tt, pre {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+}
+
+div.searchbox {
+    width: 300px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+h1 {
+    margin: 0px 0px 15px 0px;
+    padding: 0px;
+    color: #999;
+    background: transparent;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 28px;
+    font-family: verdana, arial, helvetica, sans-serif !important;
+}
+
+h1 a {
+    color: #999 !important;
+    background: transparent;
+}
+
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover {
+    text-decoration: none;
+}
+
+h2,h3,h4 {
+    color: inherit;
+    font-weight: bold;
+    font-family: Verdana, arial, helvetica, sans-serif !important;
+    background: #eee; 
+    border: 1px solid #c0c0c0;
+    padding: 3px;
+    padding-left: 5px;
+}
+
+td.leftmenu h2, td.leftmenu h3, td.leftmenu h4{
+    border: 0;
+    padding: 0;
+    border-bottom: 1px solid black;
+}
+
+h2 a, h3 a, h4 a {
+    background: transparent;
+    color: black !important;
+}
+
+h3.leftmenuheading, h3.leftmenuheading a {
+    background: #eee !important;
+    color: #006600 !important;
+    border: 0 !important;
+}
+
+hr {
+    background: silver;
+    border: 0;
+    height: 1px;
+    margin-top: 5px
+}
+
+pre {
+    border: 1px solid #999999;
+    padding: 5px 5px 5px 7px;
+    background: #ffffdd;
+    color: #000000;
+}
+
+ul {
+    list-style: url(aquadot.jpg) disc outside;
+}
+
+.leftmenu {
+    padding: 10px;
+    border: 1px solid #999;
+    width: 150px;
+    background: #eee;
+}
+
+/* for the java2html plugin - so everything is not centered */
+div table code {position: relative; top: -10px}
+
+div table {
+    width: 100%; 
+    border: 1px solid #c0c0c0;
+}
+
+div table td {
+    padding: 10px;
+}
+
+div.attachments table {
+    width: 500px;
+    border: 0;
+}
+
+div.attachments table td {
+    padding: 2px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+div.note, span.note {
+    background-color: #cfc;
+    font-size: 11px;
+    border: 1px solid silver;
+    padding: 5px;
+}
+
+span.note {
+    display: block;
+}

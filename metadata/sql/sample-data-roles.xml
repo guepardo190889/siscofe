@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+  <!--Role-START-->
+ <table name='role'>
+    <column>id</column>
+    <column>name</column>
+    <column>description</column>
+    <row>
+      <value>1</value>
+      <value>admin</value>
+      <value><![CDATA[Administrator role (can edit Users)]]></value>
+    </row>
+    <row>
+      <value>2</value>
+      <value>user</value>
+      <value><![CDATA[Default role for all Users]]></value>
+    </row>
+  </table>
+  <table name='user_role'>
+    <column>user_id</column>
+    <column>role_id</column>
+    <row>
+      <value>1</value>
+      <value>2</value>
+    </row>
+    <row>
+      <value>2</value>
+      <value>1</value>
+    </row>
+  </table>
+  <!--Role-END-->
+</dataset>

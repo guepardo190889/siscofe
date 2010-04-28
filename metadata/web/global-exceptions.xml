@@ -1,0 +1,5 @@
+    <global-exceptions>
+        <exception type="java.lang.Exception"
+            key="errors.general"
+            handler="mx.edu.um.webapp.action.ActionExceptionHandler"/>
+    </global-exceptions>

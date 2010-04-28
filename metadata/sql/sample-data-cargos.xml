@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+   <!--Cargo-START-->
+  <table name='cargos'>
+    <column>id</column>
+    <column>version</column>
+    <column>nombre</column>
+    <column>descripcion</column>
+    <row>
+        <value>1</value>
+        <value>1</value>
+        <value>Director de Escuela Sabatica</value>
+        <value>Encargado de dirigir todo lo relacionado con Escuela Sabatica</value>
+    </row>
+    <row>
+        <value>2</value>
+        <value>1</value>
+        <value>Director de Ministerio Personal</value>
+        <value>Encargado de dirigir todo lo relacionado con Ministerio Personal</value>
+    </row>
+    <row>
+        <value>3</value>
+        <value>1</value>
+        <value>Director de Jovenes</value>
+        <value>Encargado de dirigir todo lo relacionado con Jovenes</value>
+    </row>
+    <row>
+        <value>4</value>
+        <value>1</value>
+        <value>Director de Comunicacion</value>
+        <value>Encargado de dirigir todo lo relacionado con Comunicacion</value>
+    </row>
+    <row>
+        <value>5</value>
+        <value>1</value>
+        <value>Director de Dorcas</value>
+        <value>Encargado de dirigir todo lo relacionado con Dorcas</value>
+    </row>
+    <row>
+        <value>6</value>
+        <value>1</value>
+        <value>Director de Departamentos Infantiles</value>
+        <value>Encargado de dirigir todo lo relacionado con Departamentos Infantiles</value>
+    </row>
+    <row>
+        <value>7</value>
+        <value>1</value>
+        <value>Director de Diaconos</value>
+        <value>Encargado de dirigir todo lo relacionado con Diaconos</value>
+    </row>
+    <row>
+        <value>8</value>
+        <value>1</value>
+        <value>Director de Diaconisas</value>
+        <value>Encargado de dirigir todo lo relacionado con Diaconisas</value>
+    </row>
+    <row>
+        <value>9</value>
+        <value>1</value>
+        <value>Director de Mayordomia</value>
+        <value>Encargado de dirigir todo lo relacionado con Mayordomia</value>
+    </row>
+    <row>
+        <value>10</value>
+        <value>1</value>
+        <value>Director de Hogar y Familia</value>
+        <value>Encargado de dirigir todo lo relacionado con Hogar y Familia</value>
+    </row>
+   <row>
+        <value>11</value>
+        <value>1</value>
+        <value>Director de Salud y Temperancia</value>
+        <value>Encargado de dirigir todo lo relacionado con Salud y Temperancia</value>
+    </row>
+    <row>
+        <value>12</value>
+        <value>1</value>
+        <value>Director de Canto de Iglesia</value>
+        <value>Encargado de dirigir todo lo relacionado con Canto de Iglesia</value>
+    </row>
+    <row>
+        <value>13</value>
+        <value>1</value>
+        <value>Director de Ministerio de la Mujer</value>
+        <value>Encargado de dirigir todo lo relacionado con Ministerio de la Mujer</value>
+    </row>
+    <row>
+        <value>14</value>
+        <value>1</value>
+        <value>Director de Ministerio Infantil</value>
+        <value>Encargado de dirigir todo lo relacionado con Ministerio Infantil</value>
+    </row>
+    <row>
+        <value>15</value>
+        <value>1</value>
+        <value>Director de Ujieres</value>
+        <value>Encargado de dirigir todo lo relacionado con Ujieres</value>
+    </row>
+    <row>
+        <value>16</value>
+        <value>1</value>
+        <value>Director de Asuntos Legales</value>
+        <value>Encargado de dirigir todo lo relacionado con Asuntos Legales</value>
+    </row>
+    <row>
+        <value>17</value>
+        <value>1</value>
+        <value>Director de Educación</value>
+        <value>Encargado de dirigir todo lo relacionado con Educación</value>
+    </row>
+    <row>
+        <value>18</value>
+        <value>1</value>
+        <value>Director de Pro-Construcción</value>
+        <value>Encargado de dirigir todo lo relacionado con Pro-Construcción</value>
+    </row>
+    <row>
+        <value>19</value>
+        <value>1</value>
+        <value>Director de Sonido</value>
+        <value>Encargado de dirigir todo lo relacionado con Sonidoo</value>
+    </row>
+  </table>
+  <!--Cargo-END-->
+</dataset>

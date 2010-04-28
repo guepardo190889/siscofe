@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+
+>
+
+    <class
+            name="mx.edu.um.miembros.model.Miembro"
+            table="miembro"
+    >
+
+    <id
+        name="id"
+            column="id"
+    >
+
+    <!-- The generator-class attribute of @hibernate.id is deprecated, use the @hibernate.generator tag instead -->
+    <generator class="increment">
+
+    </generator>
+
+    </id>
+
+        <version
+            name="version"
+            column="version"
+            type="java.lang.Integer"
+        />
+
+        <property
+            name="nombre"
+                    column="nombre"
+                length="30"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="apellidoMaterno"
+                    column="ap_materno"
+                length="30"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="apellidoPaterno"
+                    column="ap_paterno"
+                length="30"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="sexo"
+                    column="sexo"
+                length="1"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="estadoCivil"
+                    column="estado_civil"
+                length="2"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="nombreConyuge"
+                    column="conyuge"
+                length="200"
+        >
+
+        </property>
+
+        <property
+            name="telefonoFijo"
+                    column="tel_fijo"
+                length="12"
+        >
+
+        </property>
+
+        <property
+            name="telefonoCelular"
+                    column="tel_cel"
+                length="13"
+        >
+
+        </property>
+
+        <property
+            name="correoElectronico"
+                    column="email"
+                length="150"
+        >
+
+        </property>
+
+        <property
+            name="observaciones"
+                    column="observaciones"
+                length="200"
+        >
+
+        </property>
+
+        <property
+            name="lugarBautismo"
+                    column="lugar_bautismo"
+                length="200"
+        >
+
+        </property>
+
+        <property
+            name="ministroOficiante"
+                    column="ministroOficiante"
+        >
+
+        </property>
+
+        <property
+            name="religionAnterior"
+                    column="religion_anterior"
+                length="250"
+        >
+
+        </property>
+
+        <property
+            name="modoIngreso"
+                    column="modo_ingreso"
+                length="2"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="cursoBiblico"
+                    column="curso_biblico"
+                length="100"
+        >
+
+        </property>
+
+        <property
+            name="comoConocioIglesia"
+                    column="como_conocio"
+                length="250"
+        >
+
+        </property>
+
+        <property
+            name="status"
+                    column="status"
+                length="2"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="estudioVeintiochoCreencias"
+                    column="estudio_creencias"
+                length="1"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="diezmando"
+                    column="diezmando"
+                length="1"
+        >
+
+        </property>
+
+        <property
+            name="fechaBautismo"
+                    column="fecha_bautismo"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="fechaJuntaAdministrativa"
+                    column="fecha_juntaAdm"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="fechaJuntaDirectiva"
+                    column="fecha_juntaDir"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="numeroVotosJuntaAdministrativa"
+                    column="votos_juntaAdm"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="numeroVotosJuntaDirectiva"
+                    column="votos_juntaDir"
+                not-null="true"
+        >
+
+        </property>
+
+    </class>    
+
+</hibernate-mapping>
+
